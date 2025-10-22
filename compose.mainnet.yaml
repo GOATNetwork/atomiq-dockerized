@@ -1,0 +1,49 @@
+services:
+  bitcoind:
+    restart: unless-stopped
+    stop_grace_period: 2m
+    image: atomiqlabs/bitcoind:latest
+    ports:
+      - "127.0.0.1:8332:8332"
+      - "8333:8333"
+      - "127.0.0.1:39332:39332"
+      - "127.0.0.1:39331:39331"
+    volumes:
+      - bitcoind-storage:/mnt/data
+      - ./config:/mnt/config:ro
+  lnd:
+    restart: unless-stopped
+    stop_grace_period: 2m
+    image: atomiqlabs/lnd:latest
+    ports:
+      - "127.0.0.1:10009:10009"
+    volumes:
+      - lnd-storage:/mnt/data
+      - ./config:/mnt/config:ro
+      - ./share:/mnt/share
+#  btcrelay:
+#    restart: unless-stopped
+#    image: atomiqlabs/btcrelay:latest
+#    ports:
+#      - "127.0.0.1:40220:40220"
+#    volumes:
+#      - btcrelay-storage:/mnt/storage
+#      - ./config/relayer:/mnt/config:ro
+#      - ./share:/mnt/share
+  intermediary:
+    restart: unless-stopped
+    image: atomiqlabs/intermediary:latest
+    ports:
+      - "127.0.0.1:40221:40221"
+      - "4000:4000"
+      - "80:80"
+    volumes:
+      - intermediary-storage:/mnt/storage
+      - ./config/intermediary:/mnt/config:ro
+      - ./share:/mnt/share
+      - ./plugins:/mnt/plugins
+volumes:
+  lnd-storage:
+  bitcoind-storage:
+  btcrelay-storage:
+  intermediary-storage:

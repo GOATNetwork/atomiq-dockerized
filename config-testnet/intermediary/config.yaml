@@ -1,0 +1,162 @@
+#Solana RPC
+SOLANA:
+  #Solana RPC URL to use, it is recommended to use a dedicated RPC endpoint from e.g. Helius (recommended), Quicknode, etc.
+  RPC_URL: "https://api.devnet.solana.com"
+  #Maximum fee in micro lamport/CU to use for transactions
+  MAX_FEE_MICRO_LAMPORTS: 250000
+  #File with the wallet mnemonic seed
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+  #Static tip (in lamports) to add to every transaction
+  # STATIC_TIP: 50000
+
+#Starknet RPC
+STARKNET:
+  #Starknet RPC URL
+  RPC_URL: "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
+  #Gas price limits (higher bound)
+  MAX_L1_FEE_GWEI: 4000000
+  MAX_L2_FEE_GWEI: 4000000
+  MAX_L1_DATA_FEE_GWEI: 4000000
+  #Starknet chain
+  CHAIN: "SEPOLIA"
+
+  #File with wallet mnemonic seed
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+
+  #Starknet quotes timeout
+  AUTHORIZATION_TIMEOUT: 60
+
+#Required APY option premium to be paid by the users as security deposit with BTC -> SOL swaps
+SECURITY_DEPOSIT_APY: 20
+
+#Bitcoin RPC configuration
+BITCOIND:
+  PROTOCOL: "http"
+  PORT: 18332
+  HOST: "bitcoind-testnet"
+  RPC_USERNAME: "user1"
+  RPC_PASSWORD: "ThisIsAPassword"
+  NETWORK: "testnet"
+
+#LND RPC configuration
+LND:
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+  WALLET_PASSWORD_FILE: "/mnt/share/wallet/password.txt"
+  CERT_FILE: "/mnt/share/lnd/tls.cert"
+  MACAROON_FILE: "/mnt/share/lnd/admin.macaroon"
+  HOST: "lnd-testnet"
+  PORT: 20009
+
+#LN setup, uncomment these lines if you want to enable lightning network support for your node
+# LN:
+#   #Total swap fee is calculated as BASE_FEE + {SWAP_VALUE}*FEE_PERCENTAGE
+#   #Base fee (in BTC) to be paid by every swap
+#   BASE_FEE: 0.00000010
+#   #Fee (in %) to be charged on the swaps
+#   FEE_PERCENTAGE: 0.3
+
+#   #Minimum swappable amount in BTC (for lightning network swaps)
+#   MIN: 0.00001000
+#   #Maximum swappable amount in BTC (for lightning network swaps)
+#   MAX: 0.01000000
+
+#   #Allow lightning network swaps that cannot be probed first
+#   ALLOW_NON_PROBABLE_SWAPS: false
+#   #Allow lightning network swaps where the LN invoice has a very short expiry
+#   ALLOW_LN_SHORT_EXPIRY: false
+
+#On-chain setup
+ONCHAIN:
+  #Total swap fee is calculated as BASE_FEE + {SWAP_VALUE}*FEE_PERCENTAGE
+  #Base fee (in BTC) to be paid by every swap
+  BASE_FEE: 0.00000100
+  #Fee (in %) to be charged on the swaps
+  FEE_PERCENTAGE: 0.25
+
+  #Minimum swappable amount in BTC (for on-chain swaps)
+  MIN: 0.00010000
+  #Maximum swappable amount in BTC (for on-chain swaps)
+  MAX: 0.05000000
+
+  #Network fee buffer (in %), we charge the client this much more on the network
+  # fee to accomodate for the possible fee rate increases in the near future 
+  NETWORK_FEE_ADD_PERCENTAGE: 25
+
+  #Additional fee to pay, above the estimated sats/vB fee
+  ADD_NETWORK_FEE: 5
+
+#On-chain setup BTC -> Starknet/Solana
+ONCHAIN_SPV:
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+
+  #Total swap fee is calculated as BASE_FEE + {SWAP_VALUE}*FEE_PERCENTAGE
+  #Base fee (in BTC) to be paid by every swap
+  BASE_FEE: 0.00000150
+  #Fee (in %) to be charged on the swaps
+  FEE_PERCENTAGE: 0.3
+
+  #Minimum swappable amount in BTC (for on-chain swaps)
+  MIN: 0.00010000
+  #Maximum swappable amount in BTC (for on-chain swaps)
+  MAX: 0.05000000
+
+  #Maximum "gas drop" for different chains
+  GAS_MAX:
+    STARKNET: 5
+    SOLANA: 0.05
+
+#Tradable assets setup
+ASSETS:
+  WBTC:
+    chains:
+      SOLANA:
+        #Address of the token
+        address: "4Jar76rqMxBfLDLa1syMd7i4R2YhGSkz2EYiAFyNVxja"
+        #Decimal places
+        decimals: 8
+    #Pricing source (using Binance), you can invert the pair by prepending "!"
+    pricing: "WBTCBTC"
+  USDC:
+    chains:
+      SOLANA:
+        address: "6jrUSQHX8MTJbtWpdbx65TAwUv1rLyCF6fVjr9yELS75"
+        decimals: 6
+    pricing: "!BTCUSDC"
+  USDT:
+    chains:
+      SOLANA:
+        address: "Ar5yfeSyDNDHyq1GvtcrDKjNcoVTQiv7JaVvuMDbGNDT"
+        decimals: 6
+    pricing: "!BTCUSDT"
+  SOL:
+    chains:
+      SOLANA:
+        address: "So11111111111111111111111111111111111111112"
+        decimals: 9
+        securityDepositAllowed: true
+    pricing: "SOLBTC"
+
+#CLI - command line interface config
+CLI:
+  #CLI bind address
+  ADDRESS: "0.0.0.0"
+  #CLI TCP port
+  PORT: 40121
+
+#REST RFQ API config
+REST:
+  #REST API bind address
+  ADDRESS: "0.0.0.0"
+  #REST API port
+  PORT: 4001
+
+#Automatic SSL certificate provisioning config
+SSL_AUTO:
+  #HTTP listen port to list for ACME challenges
+  HTTP_LISTEN_PORT: 80
+  #DNS proxy to use - mapping the server's IP address to a domain
+  DNS_PROXY: "nodes.atomiq.exchange"
+
+#Node extensions/plugins
+PLUGINS:
+  atomiq-archiver: "atomiq-archiver@latest"

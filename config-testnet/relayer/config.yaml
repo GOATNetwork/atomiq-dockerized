@@ -1,0 +1,35 @@
+#Bitcoin RPC configuration
+BTC_PROTOCOL: "http"
+BTC_PORT: 18332
+ZMQ_PORT: 49332
+BTC_HOST: "bitcoind-testnet"
+BTC_RPC_USERNAME: "user1"
+BTC_RPC_PASSWORD: "ThisIsAPassword"
+
+#Solana config
+SOLANA:
+  #Solana RPC URL to use, it is recommended to use a dedicated RPC endpoint from e.g. Helius (recommended), Quicknode, etc.
+  RPC_URL: "https://api.devnet.solana.com"
+  #CLI - command line interface config
+  CLI_ADDRESS: "0.0.0.0"
+  CLI_PORT: 40120
+  #Fee settings
+  MAX_FEE_MICRO_LAMPORTS: 250000
+  STATIC_TIP: "10000"
+  #File with the wallet mnemonic seed
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+
+STARKNET:
+  #Starknet RPC URL to use, it is recommended to use a dedicated RPC endpoint
+  RPC_URL: "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
+  #CLI - command line interface config
+  CLI_ADDRESS: "0.0.0.0"
+  CLI_PORT: 40130
+  #Gas price limits (higher bound)
+  MAX_L1_FEE_GWEI: 4000000
+  MAX_L2_FEE_GWEI: 4000000
+  MAX_L1_DATA_FEE_GWEI: 4000000
+  #Starknet chain to use
+  CHAIN: "SEPOLIA"
+  #File with the wallet mnemonic seed
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"

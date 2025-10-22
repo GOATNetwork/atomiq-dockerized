@@ -1,0 +1,7 @@
+share/
+share-testnet/
+plugins/
+plugins-testnet/
+images/
+images.tar.gz
+docker-build/*/.src/
