@@ -14,10 +14,10 @@ docker load --input images/btcrelay.tar
 docker load --input images/intermediary.tar
 
 # Ask which environment to setup, store this in a variable
-read -p "Which environment to use (mainnet/testnet)? " environment
+read -p "Which environment to use (mainnet/testnet/testnet4)? " environment
 
-if [ "$environment" != "mainnet" ] && [ "$environment" != "testnet" ]; then
-	echo "Invalid environment, valid are: mainnet, testnet"
+if [ "$environment" != "mainnet" ] && [ "$environment" != "testnet" ] && [ "$environment" != "testnet4" ]; then
+	echo "Invalid environment, valid are: mainnet, testnet, testnet4"
 	exit 1
 fi
 
@@ -26,6 +26,8 @@ echo "Update complete! Running docker-compose to restart the node..."
 # Run compose-mainnet.sh for mainnet and compose-testnet.sh for testnet environment
 if [ "$environment" == "mainnet" ]; then
 	bash start-mainnet.bash
-else
+elif [ "$environment" == "testnet" ]; then
 	bash start-testnet.bash
+else
+	bash start-testnet4.bash
 fi

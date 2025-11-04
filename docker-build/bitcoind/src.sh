@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="v28.1"
+VERSION="v30.0"
 SRC="https://github.com/bitcoin/bitcoin/archive/refs/tags/${VERSION}.tar.gz"
 echo $SRC
 wget -O package.tar.gz $SRC

@@ -1,0 +1,49 @@
+services:
+  bitcoind-testnet4:
+    restart: unless-stopped
+    stop_grace_period: 2m
+    image: atomiqlabs/bitcoind:latest
+    ports:
+      - "127.0.0.1:18332:18332"
+      - "18333:18333"
+      - "127.0.0.1:49332:49332"
+      - "127.0.0.1:49331:49331"
+    volumes:
+      - bitcoind-storage-testnet4:/mnt/data
+      - ./config-testnet4:/mnt/config:ro
+  lnd-testnet4:
+    restart: unless-stopped
+    stop_grace_period: 2m
+    image: atomiqlabs/lnd:latest
+    ports:
+      - "127.0.0.1:20009:20009"
+    volumes:
+      - lnd-storage-testnet4:/mnt/data
+      - ./config-testnet4:/mnt/config:ro
+      - ./share-testnet4:/mnt/share
+#  btcrelay-testnet4:
+#    restart: unless-stopped
+#    image: atomiqlabs/btcrelay:latest
+#    ports:
+#      - "127.0.0.1:40120:40120"
+#    volumes:
+#      - btcrelay-storage-testnet4:/mnt/storage
+#      - ./config-testnet4/relayer:/mnt/config:ro
+#      - ./share-testnet4:/mnt/share
+  intermediary-testnet4:
+    restart: unless-stopped
+    image: atomiqlabs/intermediary:latest
+    ports:
+      - "127.0.0.1:40121:40121"
+      - "8443:8443"
+      - "80:80"
+    volumes:
+      - intermediary-storage-testnet4:/mnt/storage
+      - ./config-testnet4/intermediary:/mnt/config:ro
+      - ./share-testnet4:/mnt/share
+      - ./plugins-testnet4:/mnt/plugins
+volumes:
+  bitcoind-storage-testnet4:
+  lnd-storage-testnet4:
+  btcrelay-storage-testnet4:
+  intermediary-storage-testnet4:

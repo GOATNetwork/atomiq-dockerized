@@ -11,10 +11,10 @@ docker load --input images/btcrelay.tar
 docker load --input images/intermediary.tar
 
 # Ask which environment to setup, store this in a variable
-read -p "Which environment to use (mainnet/testnet)? " environment
+read -p "Which environment to use (mainnet/testnet/testnet4)? " environment
 
-if [ "$environment" != "mainnet" ] && [ "$environment" != "testnet" ]; then
-	echo "Invalid environment, valid are: mainnet, testnet"
+if [ "$environment" != "mainnet" ] && [ "$environment" != "testnet" ] && [ "$environment" != "testnet4" ]; then
+	echo "Invalid environment, valid are: mainnet, testnet, testnet4"
 	exit 1
 fi
 
@@ -30,10 +30,14 @@ if [ "$environment" == "mainnet" ]; then
 	mkdir share
 	mkdir share/wallet
 	mnemonicFile="share/wallet/mnemonic.txt"
-else
+elif [ "$environment" == "testnet" ]; then
 	mkdir share-testnet
 	mkdir share-testnet/wallet
 	mnemonicFile="share-testnet/wallet/mnemonic.txt"
+else
+	mkdir share-testnet4
+	mkdir share-testnet4/wallet
+	mnemonicFile="share-testnet4/wallet/mnemonic.txt"
 fi
 
 if [ -f "$mnemonicFile" ]; then
@@ -58,8 +62,10 @@ fi
 
 if [ "$environment" == "mainnet" ]; then
 	passwordFile="share/wallet/password.txt"
-else
+elif [ "$environment" == "testnet" ]; then
 	passwordFile="share-testnet/wallet/password.txt"
+else
+	passwordFile="share-testnet4/wallet/password.txt"
 fi
 
 if [ ! -f "$passwordFile" ]; then
@@ -73,6 +79,8 @@ echo "Setup complete! Running docker-compose..."
 # Run compose-mainnet.sh for mainnet and compose-testnet.sh for testnet environment
 if [ "$environment" == "mainnet" ]; then
 	bash start-mainnet.bash
-else
+elif [ "$environment" == "testnet" ]; then
 	bash start-testnet.bash
+else
+	bash start-testnet4.bash
 fi

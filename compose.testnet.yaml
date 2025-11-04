@@ -35,7 +35,7 @@ services:
     image: atomiqlabs/intermediary:latest
     ports:
       - "127.0.0.1:40121:40121"
-      - "4001:4001"
+      - "8443:8443"
       - "80:80"
     volumes:
       - intermediary-storage-testnet:/mnt/storage

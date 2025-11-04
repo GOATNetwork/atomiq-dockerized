@@ -1,5 +1,7 @@
 #Solana RPC
 SOLANA:
+  #If the LP node has below this amount it will stop processing new swaps
+  MIN_NATIVE_RESERVE: 0.1
   #Solana RPC URL to use, it is recommended to use a dedicated RPC endpoint from e.g. Helius (recommended), Quicknode, etc.
   RPC_URL: "https://api.devnet.solana.com"
   #Maximum fee in micro lamport/CU to use for transactions
@@ -10,23 +12,67 @@ SOLANA:
   # STATIC_TIP: 50000
 
 #Starknet RPC
-STARKNET:
-  #Starknet RPC URL
-  RPC_URL: "https://starknet-sepolia.public.blastapi.io/rpc/v0_8"
-  #Gas price limits (higher bound)
-  MAX_L1_FEE_GWEI: 4000000
-  MAX_L2_FEE_GWEI: 4000000
-  MAX_L1_DATA_FEE_GWEI: 4000000
-  #Starknet chain
-  CHAIN: "SEPOLIA"
+#STARKNET:
+#  #If the LP node has below this amount it will stop processing new swaps
+#  MIN_NATIVE_RESERVE: 100
+#  #Starknet RPC URL
+#  RPC_URL: ""
+#  #Can also optionally specify an additional WS URL - allows for faster swap processing
+#  WS_URL: ""
+#  #Gas price limits (higher bound)
+#  MAX_L1_FEE_GWEI: 20000000
+#  MAX_L2_FEE_GWEI: 4000000
+#  MAX_L1_DATA_FEE_GWEI: 10000000
+#  #Starknet chain
+#  CHAIN: "SEPOLIA"
+#
+#  #File with wallet mnemonic seed
+#  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+#
+#  #Starknet quotes timeout
+#  AUTHORIZATION_TIMEOUT: 60
+
+#Botanix RPC
+BOTANIX:
+  #If the LP node has below this amount it will stop processing new swaps
+  MIN_NATIVE_RESERVE: 0.0002
+  #Botanix RPC URL, can either be an http or ws RPC
+  RPC_URL: "https://node.botanixlabs.dev"
+  #Maximum block range that the underlying RPC provider supports
+  MAX_LOGS_BLOCK_RANGE: 900
+  #Fees
+  MAX_FEE_GWEI: 2
+  FEE_TIP_GWEI: 0.001
+  #Botanix chain
+  CHAIN: "TESTNET"
 
   #File with wallet mnemonic seed
   MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
 
-  #Starknet quotes timeout
+  #Botanix quotes timeout
   AUTHORIZATION_TIMEOUT: 60
 
-#Required APY option premium to be paid by the users as security deposit with BTC -> SOL swaps
+#Alpen RPC
+ALPEN:
+  #If the LP node has below this amount it will stop processing new swaps
+  MIN_NATIVE_RESERVE: 0.0002
+  #Alpen RPC URL, can either be an http or ws RPC
+  RPC_URL: "https://rpc.testnet.alpenlabs.io"
+  #Maximum block range that the underlying RPC provider supports
+  MAX_LOGS_BLOCK_RANGE: 900
+  #Fees
+  MAX_FEE_GWEI: 2
+  FEE_TIP_GWEI: 0.001
+  #Alpen chain
+  CHAIN: "TESTNET"
+
+  #File with wallet mnemonic seed
+  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
+
+  #Botanix quotes timeout
+  AUTHORIZATION_TIMEOUT: 60
+
+#Required APY option premium to be paid by the users as security deposit with BTC -> Solana swaps
 SECURITY_DEPOSIT_APY: 20
 
 #Bitcoin RPC configuration
@@ -48,22 +94,34 @@ LND:
   PORT: 20009
 
 #LN setup, uncomment these lines if you want to enable lightning network support for your node
-# LN:
-#   #Total swap fee is calculated as BASE_FEE + {SWAP_VALUE}*FEE_PERCENTAGE
-#   #Base fee (in BTC) to be paid by every swap
-#   BASE_FEE: 0.00000010
-#   #Fee (in %) to be charged on the swaps
-#   FEE_PERCENTAGE: 0.3
-
-#   #Minimum swappable amount in BTC (for lightning network swaps)
-#   MIN: 0.00001000
-#   #Maximum swappable amount in BTC (for lightning network swaps)
-#   MAX: 0.01000000
-
-#   #Allow lightning network swaps that cannot be probed first
-#   ALLOW_NON_PROBABLE_SWAPS: false
-#   #Allow lightning network swaps where the LN invoice has a very short expiry
-#   ALLOW_LN_SHORT_EXPIRY: false
+#LN:
+#  #Total swap fee is calculated as BASE_FEE + {SWAP_VALUE}*FEE_PERCENTAGE
+#  #Base fee (in BTC) to be paid by every swap
+#  BASE_FEE: 0.00000010
+#  #Fee (in %) to be charged on the swaps
+#  FEE_PERCENTAGE: 0.3
+#
+#  #Minimum swappable amount in BTC (for lightning network swaps)
+#  MIN: 0.00001000
+#  #Maximum swappable amount in BTC (for lightning network swaps)
+#  MAX: 0.01000000
+#
+#  #Allow lightning network swaps that cannot be probed first
+#  ALLOW_NON_PROBABLE_SWAPS: true
+#  #Allow lightning network swaps where the LN invoice has a very short expiry
+#  ALLOW_LN_SHORT_EXPIRY: true
+#  #Set expiration for lightning swaps invoices
+#  INVOICE_EXPIRY_SECONDS: 90
+#
+#  #Maximum amounts for swap for gas
+#  GAS_MAX:
+#    STARKNET: 5
+#    SOLANA: 0.03
+#    BOTANIX: 0.00005
+#    ALPEN: 0.00005
+#
+#  MAX_INFLIGHT_SWAPS: 100
+#  MAX_INFLIGHT_AUTO_SWAPS: 20
 
 #On-chain setup
 ONCHAIN:
@@ -85,7 +143,9 @@ ONCHAIN:
   #Additional fee to pay, above the estimated sats/vB fee
   ADD_NETWORK_FEE: 5
 
-#On-chain setup BTC -> Starknet/Solana
+  MAX_INFLIGHT_SWAPS: 100
+
+#On-chain setup BTC -> Starknet/EVM (new protocol - not BTC -> Solana!!!)
 ONCHAIN_SPV:
   MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
 
@@ -104,30 +164,29 @@ ONCHAIN_SPV:
   GAS_MAX:
     STARKNET: 5
     SOLANA: 0.05
+    BOTANIX: 0.00005
+    ALPEN: 0.00005
+
+  MAX_INFLIGHT_SWAPS: 100
 
 #Tradable assets setup
 ASSETS:
-  WBTC:
+  ABTC:
     chains:
-      SOLANA:
-        #Address of the token
-        address: "4Jar76rqMxBfLDLa1syMd7i4R2YhGSkz2EYiAFyNVxja"
-        #Decimal places
-        decimals: 8
-    #Pricing source (using Binance), you can invert the pair by prepending "!"
-    pricing: "WBTCBTC"
-  USDC:
+      ALPEN:
+        address: "0x0000000000000000000000000000000000000000"
+        decimals: 18
+        securityDepositAllowed: true
+        spvVaultMultiplier: 1000000000
+    pricing: "$fixed-100000000"
+  BBTC:
     chains:
-      SOLANA:
-        address: "6jrUSQHX8MTJbtWpdbx65TAwUv1rLyCF6fVjr9yELS75"
-        decimals: 6
-    pricing: "!BTCUSDC"
-  USDT:
-    chains:
-      SOLANA:
-        address: "Ar5yfeSyDNDHyq1GvtcrDKjNcoVTQiv7JaVvuMDbGNDT"
-        decimals: 6
-    pricing: "!BTCUSDT"
+      BOTANIX:
+        address: "0x0000000000000000000000000000000000000000"
+        decimals: 18
+        securityDepositAllowed: true
+        spvVaultMultiplier: 1000000000
+    pricing: "$fixed-100000000"
   SOL:
     chains:
       SOLANA:
@@ -135,6 +194,22 @@ ASSETS:
         decimals: 9
         securityDepositAllowed: true
     pricing: "SOLBTC"
+  ETH:
+    chains:
+      STARKNET:
+        address: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
+        decimals: 18
+        securityDepositAllowed: true
+        spvVaultMultiplier: 1000000000
+    pricing: "ETHBTC"
+  STRK:
+    chains:
+      STARKNET:
+        address: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
+        decimals: 18
+        securityDepositAllowed: true
+        spvVaultMultiplier: 1000000000
+    pricing: "STRKUSDT;!BTCUSDT"
 
 #CLI - command line interface config
 CLI:
@@ -148,7 +223,7 @@ REST:
   #REST API bind address
   ADDRESS: "0.0.0.0"
   #REST API port
-  PORT: 4001
+  PORT: 8443
 
 #Automatic SSL certificate provisioning config
 SSL_AUTO:
