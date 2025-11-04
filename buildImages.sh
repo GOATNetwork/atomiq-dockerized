@@ -1,3 +1,5 @@
+cd docker-build
+
 cd bitcoind
 sh build.sh
 
