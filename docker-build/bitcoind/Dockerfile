@@ -2,7 +2,7 @@ FROM alpine:3.21 as builder
 RUN apk --no-cache add build-base cmake linux-headers pkgconf python3 libevent-dev boost-dev zeromq-dev sqlite-dev
 WORKDIR /src
 ADD .src .
-RUN cmake -B build -DENABLE_IPC=OFF
+RUN cmake -B build -DENABLE_IPC=OFF -DWITH_ZMQ=ON
 RUN cmake --build build
 RUN cmake --install build
 RUN strip /usr/local/bin/bitcoind /usr/local/bin/bitcoin-cli
