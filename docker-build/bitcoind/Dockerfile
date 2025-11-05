@@ -9,6 +9,6 @@ RUN strip /usr/local/bin/bitcoind /usr/local/bin/bitcoin-cli
 
 
 FROM alpine:3.21
-RUN apk --no-cache add boost-system boost-filesystem boost-chrono boost-thread libevent zeromq bash
+RUN apk --no-cache add boost-system boost-filesystem boost-chrono boost-thread libevent zeromq bash sqlite-dev
 COPY --from=builder /usr/local/bin/bitcoind /usr/local/bin/bitcoin-cli /usr/local/bin/
 CMD ["bitcoind", "-datadir=/mnt/data", "-conf=/mnt/config/bitcoin.conf"]

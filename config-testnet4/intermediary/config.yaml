@@ -5,7 +5,7 @@
 #  #Starknet RPC URL
 #  RPC_URL: ""
 #  #Can also optionally specify an additional WS URL - allows for faster swap processing
-#  WS_URL: ""
+#  #WS_URL: ""
 #  #Gas price limits (higher bound)
 #  MAX_L1_FEE_GWEI: 20000000
 #  MAX_L2_FEE_GWEI: 4000000
