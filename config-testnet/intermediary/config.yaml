@@ -1,77 +1,3 @@
-#Solana RPC
-SOLANA:
-  #If the LP node has below this amount it will stop processing new swaps
-  MIN_NATIVE_RESERVE: 0.1
-  #Solana RPC URL to use, it is recommended to use a dedicated RPC endpoint from e.g. Helius (recommended), Quicknode, etc.
-  RPC_URL: "https://api.devnet.solana.com"
-  #Maximum fee in micro lamport/CU to use for transactions
-  MAX_FEE_MICRO_LAMPORTS: 250000
-  #File with the wallet mnemonic seed
-  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
-  #Static tip (in lamports) to add to every transaction
-  # STATIC_TIP: 50000
-
-#Starknet RPC
-#STARKNET:
-#  #If the LP node has below this amount it will stop processing new swaps
-#  MIN_NATIVE_RESERVE: 100
-#  #Starknet RPC URL
-#  RPC_URL: ""
-#  #Can also optionally specify an additional WS URL - allows for faster swap processing
-#  #WS_URL: ""
-#  #Gas price limits (higher bound)
-#  MAX_L1_FEE_GWEI: 20000000
-#  MAX_L2_FEE_GWEI: 4000000
-#  MAX_L1_DATA_FEE_GWEI: 10000000
-#  #Starknet chain
-#  CHAIN: "SEPOLIA"
-#
-#  #File with wallet mnemonic seed
-#  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
-#
-#  #Starknet quotes timeout
-#  AUTHORIZATION_TIMEOUT: 60
-
-#Botanix RPC
-BOTANIX:
-  #If the LP node has below this amount it will stop processing new swaps
-  MIN_NATIVE_RESERVE: 0.0002
-  #Botanix RPC URL, can either be an http or ws RPC
-  RPC_URL: "https://node.botanixlabs.dev"
-  #Maximum block range that the underlying RPC provider supports
-  MAX_LOGS_BLOCK_RANGE: 900
-  #Fees
-  MAX_FEE_GWEI: 2
-  FEE_TIP_GWEI: 0.001
-  #Botanix chain
-  CHAIN: "TESTNET"
-
-  #File with wallet mnemonic seed
-  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
-
-  #Botanix quotes timeout
-  AUTHORIZATION_TIMEOUT: 60
-
-#Alpen RPC
-ALPEN:
-  #If the LP node has below this amount it will stop processing new swaps
-  MIN_NATIVE_RESERVE: 0.0002
-  #Alpen RPC URL, can either be an http or ws RPC
-  RPC_URL: "https://rpc.testnet.alpenlabs.io"
-  #Maximum block range that the underlying RPC provider supports
-  MAX_LOGS_BLOCK_RANGE: 900
-  #Fees
-  MAX_FEE_GWEI: 2
-  FEE_TIP_GWEI: 0.001
-  #Alpen chain
-  CHAIN: "TESTNET"
-
-  #File with wallet mnemonic seed
-  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
-
-  #Botanix quotes timeout
-  AUTHORIZATION_TIMEOUT: 60
-
 #GOAT network RPC
 GOAT:
   #If the LP node has below this amount it will stop processing new swaps
@@ -194,22 +120,6 @@ ONCHAIN_SPV:
 
 #Tradable assets setup
 ASSETS:
-  ABTC:
-    chains:
-      ALPEN:
-        address: "0x0000000000000000000000000000000000000000"
-        decimals: 18
-        securityDepositAllowed: true
-        spvVaultMultiplier: 1000000000
-    pricing: "$fixed-100000000"
-  BBTC:
-    chains:
-      BOTANIX:
-        address: "0x0000000000000000000000000000000000000000"
-        decimals: 18
-        securityDepositAllowed: true
-        spvVaultMultiplier: 1000000000
-    pricing: "$fixed-100000000"
   GBTC:
     chains:
       GOAT:
@@ -218,29 +128,14 @@ ASSETS:
         securityDepositAllowed: true
         spvVaultMultiplier: 1000000000
     pricing: "$fixed-100000000"
-  SOL:
+  PegBTC:
     chains:
-      SOLANA:
-        address: "So11111111111111111111111111111111111111112"
-        decimals: 9
-        securityDepositAllowed: true
-    pricing: "SOLBTC"
-  ETH:
-    chains:
-      STARKNET:
-        address: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
+      GOAT:
+        address: "0x42Dff13a9D6C33f89311C188F6eA780D00287F17"
         decimals: 18
         securityDepositAllowed: true
         spvVaultMultiplier: 1000000000
-    pricing: "ETHBTC"
-  STRK:
-    chains:
-      STARKNET:
-        address: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
-        decimals: 18
-        securityDepositAllowed: true
-        spvVaultMultiplier: 1000000000
-    pricing: "STRKUSDT;!BTCUSDT"
+    pricing: "$fixed-100000000"
 
 #CLI - command line interface config
 CLI:
