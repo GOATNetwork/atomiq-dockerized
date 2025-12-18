@@ -3,6 +3,9 @@
 
 ## Pre-requisites
 - A linux based machine (preferrably ubuntu 20.04 or 22.04)
+- Testnet requirements: 4GB of RAM, 200GB SSD storage
+- Mainnet requirements: 6GB of RAM, 1TB SSD storage
+- Machine either needs to have a public IP address and be accessible from the public internet or you need to use the [Pinggy tunnel](https://docs.atomiq.exchange/liquidity-provider-nodes-lps/pinggy-tunnel) to forward traffic to your local machine
 
 ## Preparations
 
@@ -26,9 +29,9 @@ sudo ufw enable
 
 ## Installation
 
-Unpack archive
+Download docker images
 ~~~
-sudo tar -xvzf atomiq-node*
+wget https://github.com/GOATNetwork/atomiq-dockerized/releases/download/v0.1.0/images.tar.gz
 ~~~
 
 Install docker-compose
@@ -41,11 +44,33 @@ Run setup script
 sudo ./setup.bash
 ~~~
 
+Once this completes, it runs all the required software inside docker containers, you can check that all of them are running with
+~~~
+sudo docker container list
+~~~
+
 ## Interact with the node
 
 You can interact with the atomiq node through a CLI (command line interface)
 ~~~
-./lp.cli
+./lp-cli-testnet
+#./lp-cli
+~~~
+
+### Stop and start
+
+The full atomiq stack will run automatically on machine boot after installation, should you need to stop or start it you can use the following commands
+
+Stop the atomiq stack with (will stop the containers):
+~~~
+sudo ./stop-testnet.bash
+#sudo ./stop-mainnet.bash
+~~~
+
+Start the atomiq stack back up with (will reset the containers, if they are still running)
+~~~
+sudo ./start-testnet.bash
+#sudo ./start-mainnet.bash
 ~~~
 
 ## Using CLI
@@ -57,7 +82,7 @@ We need to wait for the bitcoin node to sync up to the network (download whole b
 We can monitor the status of the sync progress with the status command
 ~~~
 > status
-Solana RPC status:
+GOAT RPC status:
     Status: ready
 Bitcoin RPC status:
     Status: verifying blockchain
@@ -69,60 +94,69 @@ LND gRPC status:
 Intermediary status:
     Status: wait_btc_rpc            <---- We can see intermediary node status here, once it's "ready" the node is synced and ready to roll
     Funds: 0.000000000
-    Has enough funds (>0.1 SOL): no
+    Has enough funds (>0.0002 GBTC): no
 ~~~
 
 ### Depositing funds
 
-While the node is syncing we can already deposit funds to the node, using 'getaddress' command we get the Solana & Bitcoin deposit addresses
+While the node is syncing we can already deposit funds to the node, using 'getaddress' command we get the GOAT & Bitcoin deposit addresses
 ~~~
 > getaddress
-Solana address: HpT88XAq69t8tjtfp4pTCmAvYYE38Qny46miLf9m1DnX
+GOAT address: 0x...
 Bitcoin address: tb1qy5rl7esxn4nc9mysxwmvgw278w3lwrzwhy3f0f
 ~~~
 
 After funds are deposited to the wallets we can track the balance with the 'getbalance' command (for BTC balances it only works after bitcoin node is synced)
 ~~~
 > getbalance
-Solana wallet balances (non-trading):
-   USDC: 0.000000
-   USDT: 0.000000
-   WBTC: 0.00000000
-   WSOL: 1.492930200
+GOAT wallet balances (non-trading):
+   PegBTC: 0.00000000
+   GBTC: 0.00000000
 LP Vault balances (trading):
-   USDC: 0.000000
-   USDT: 0.000000
-   WBTC: 0.00000000
-   WSOL: 0.000000000
+   PegBTC: 0.00000000
+   GBTC: 0.00000000
 Bitcoin balances (trading):
    BTC: unknown (waiting for bitcoin node sync)
    BTC-LN: unknown (waiting for bitcoin node sync)
 ~~~
 
-We also have to deposit Solana assets to the LP vault so they can be used for swaps (this doesn't have to be done with bitcoin assets) - repeat this for all the assets you want to be traded 'deposit <asset:USDC/USDT/WBTC/WSOL> <amount>'
+We also have to deposit Assets to the LP vault so they can be used for swaps (this doesn't have to be done with bitcoin assets) - repeat this for all the assets you want to be traded 'deposit <asset:PegBTC/GBTC/GOAT> <amount>'
 ~~~
-> deposit WSOL 1
-Transaction sent, signature: 4PxwU42k2xocYtspd8uAjNZahjU1YZSv6E4dXMziJRq9Ajd8ecjY8GQn8XXqGoJn6vxZ7F8W6qexMcTci3EuMda6 waiting for confirmation...
+> deposit PegBTC 0.001
+Transaction sent, signature: 0x... waiting for confirmation...
 Deposit transaction confirmed!
 ~~~
+
+Note: For Goat -> BTC swaps, you don't need to deposit funds to the LP vault. Just transfer funds directly to the BTC wallet.
 
 Now we can check that the assets are really deposited and used for trading
 ~~~
 > getbalance
-Solana wallet balances (non-trading):
-   USDC: 0.000000
-   USDT: 0.000000
-   WBTC: 0.00000000
-   WSOL: 0.492930200
+GOAT wallet balances (non-trading):
+   PegBTC: 0.00000000
+   GBTC: 0.00000000
 LP Vault balances (trading):
-   USDC: 0.000000
-   USDT: 0.000000
-   WBTC: 0.00000000
-   WSOL: 1.000000000
+   PegBTC: 0.00000000
+   GBTC: 0.00000000
 Bitcoin balances (trading):
    BTC: unknown (waiting for bitcoin node sync)
    BTC-LN: unknown (waiting for bitcoin node sync)
 ~~~
+
+## Testing the LP node
+
+After the node is synced up we can test the node via the atomiq frontend, to do this you first need to get the URL of your LP node
+
+~~~
+> geturl
+Node URL: https://81-17-102-136.nip.io:4000
+~~~
+
+To make the atomiq frontend access your node you can use the following frontend URL and replace the `<your node URL>` with the URL obtained by executing the `geturl` command:
+
+`https://app.atomiq.exchange/?UNSAFE_LP_URL=<your node URL>`
+
+This will force the frontend to connect only to your LP node.
 
 ## Registering node
 
@@ -133,7 +167,7 @@ Connection to 127.0.0.1 40221 port [tcp/*] succeeded!
 Welcome to atomiq intermediary (LP node) CLI!
 Type 'help' to get a summary of existing commands!
 > status
-Solana RPC status:
+GOAT RPC status:
     Status: ready
 Bitcoin RPC status:
     Status: ready
@@ -144,12 +178,28 @@ LND gRPC status:
     Wallet status: ready
 Intermediary status:
     Status: ready               <---- We can see that our node is ready now!
-    Funds: 0.292930200
-    Has enough funds (>0.1 SOL): yes
+    Funds: 1.2930200
+    Has enough funds (>0.0002 GOAT): yes
 ~~~
 
-We can now obtain the URL of the node with the 'geturl' command
+To be able to process swaps of other atomiq users your node needs to be registered in the atomiq LP node registry.
+
+After confirming the swaps through the LP node work in the previous step, we can now send a request to register our node in the central LP registry with the `register` command. Please be sure to include an e-mail where we can contact you in case there is something wrong with your node.
+
 ~~~
-> geturl
-Node URL: https://81-17-102-136.nip.io:4000
+> register atomiq@example.com
+Success: LP registration request created, URL: https://github.com/adambor/SolLightning-registry/pull/3
 ~~~
+
+Atomiq will now review your node (check if it is reachable & try swapping through it), you can monitor your node's approval/disapproval status by issuing the `register` command again.
+
+~~~
+> register atomiq@example.com
+Success: LP registration status: pending, GitHub PR: https://github.com/adambor/SolLightning-registry/pull/3
+~~~
+
+Once your node is approved to be listed in the LP registry you will start processing user's swaps!
+
+## Configuration
+
+Your atomiq node comes pre-configured with reasonable default, but in case you want to change the configuration you can find in `config/intermediary/config.yaml` (for mainnet) or `config-testnet/intermediary/config.yaml` (for testnet) folders.
