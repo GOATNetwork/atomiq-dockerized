@@ -31,7 +31,7 @@ sudo ufw enable
 
 Download docker images
 ~~~
-wget https://github.com/GOATNetwork/atomiq-dockerized/releases/download/v0.1.0/images.tar.gz
+wget https://atomiqbeta.blob.core.windows.net/node/atomiq-node.tar.gz && tar -xvzf atomiq-node.tar.gz images.tar.gz
 ~~~
 
 Install docker-compose
@@ -48,6 +48,21 @@ Once this completes, it runs all the required software inside docker containers,
 ~~~
 sudo docker container list
 ~~~
+
+## Updating
+
+To update the node to the latest version of the docker images you can run the following
+
+Download the latest atomiq node archive
+~~~
+wget https://atomiqbeta.blob.core.windows.net/node/atomiq-node.tar.gz
+~~~
+
+Unpack & run the update script (this will automatically install the new package versions and restart all the docker containers)
+~~~
+tar -zxvf atomiq-node.tar.gz update.bash && sudo ./update.bash
+~~~
+
 
 ## Interact with the node
 

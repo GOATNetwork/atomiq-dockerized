@@ -1,42 +1,22 @@
-#Starknet RPC
-#STARKNET:
-#  #If the LP node has below this amount it will stop processing new swaps
-#  MIN_NATIVE_RESERVE: 100
-#  #Starknet RPC URL
-#  RPC_URL: ""
-#  #Can also optionally specify an additional WS URL - allows for faster swap processing
-#  #WS_URL: ""
-#  #Gas price limits (higher bound)
-#  MAX_L1_FEE_GWEI: 20000000
-#  MAX_L2_FEE_GWEI: 4000000
-#  MAX_L1_DATA_FEE_GWEI: 10000000
-#  #Starknet chain
-#  CHAIN: "SEPOLIA"
-#
-#  #File with wallet mnemonic seed
-#  MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
-#
-#  #Starknet quotes timeout
-#  AUTHORIZATION_TIMEOUT: 60
-
-#Citrea RPC
-CITREA:
+#GOAT network RPC
+GOAT:
   #If the LP node has below this amount it will stop processing new swaps
-  MIN_NATIVE_RESERVE: 0.002
-  #Citrea RPC URL, can either be an http or ws RPC
-  RPC_URL: "https://rpc.testnet.citrea.xyz"
+  MIN_NATIVE_RESERVE: 0.0002
+  #GOAT Network RPC URL, can either be an http or ws RPC
+  RPC_URL: "https://rpc.testnet3.goat.network"
   #Maximum block range that the underlying RPC provider supports
   MAX_LOGS_BLOCK_RANGE: 900
   #Fees
   MAX_FEE_GWEI: 2
-  FEE_TIP_GWEI: 0.001
-  #Citrea chain
-  CHAIN: "TESTNET4"
+  #Has to be at least 0.005 for GOAT Network!
+  FEE_TIP_GWEI: 0.005
+  #GOAT chain
+  CHAIN: "TESTNET"
 
   #File with wallet mnemonic seed
   MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
 
-  #Citrea quotes timeout
+  #Botanix quotes timeout
   AUTHORIZATION_TIMEOUT: 60
 
 #Required APY option premium to be paid by the users as security deposit with BTC -> Solana swaps
@@ -134,30 +114,22 @@ ONCHAIN_SPV:
 
 #Tradable assets setup
 ASSETS:
-  CBTC:
+  GBTC:
     chains:
-      CITREA:
+      GOAT:
         address: "0x0000000000000000000000000000000000000000"
         decimals: 18
         securityDepositAllowed: true
         spvVaultMultiplier: 1000000000
     pricing: "$fixed-100000000"
-  ETH:
+  PegBTC:
     chains:
-      STARKNET:
-        address: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
+      GOAT:
+        address: "0x42Dff13a9D6C33f89311C188F6eA780D00287F17"
         decimals: 18
         securityDepositAllowed: true
         spvVaultMultiplier: 1000000000
-    pricing: "ETHBTC"
-  STRK:
-    chains:
-      STARKNET:
-        address: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
-        decimals: 18
-        securityDepositAllowed: true
-        spvVaultMultiplier: 1000000000
-    pricing: "STRKUSDT;!BTCUSDT"
+    pricing: "$fixed-100000000"
 
 #CLI - command line interface config
 CLI:

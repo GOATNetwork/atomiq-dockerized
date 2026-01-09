@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "Unpacking docker images from main archive..."
+rm images.tar.gz
+tar -xvzf atomiq-node*.tar.gz images.tar.gz
+
 echo "Unpacking docker images..."
 rm -r images
 tar -xvzf images.tar.gz
