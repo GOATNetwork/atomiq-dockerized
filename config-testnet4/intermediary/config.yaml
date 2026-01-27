@@ -11,7 +11,7 @@ GOAT:
   #Has to be at least 0.005 for GOAT Network!
   FEE_TIP_GWEI: 0.005
   #GOAT chain
-  CHAIN: "TESTNET"
+  CHAIN: "TESTNET4"
 
   #File with wallet mnemonic seed
   MNEMONIC_FILE: "/mnt/share/wallet/mnemonic.txt"
@@ -64,6 +64,7 @@ LND:
 #  GAS_MAX:
 #    STARKNET: 5
 #    CITREA: 0.0001
+#    GOAT: 0.00002
 #
 #  MAX_INFLIGHT_SWAPS: 100
 #  MAX_INFLIGHT_AUTO_SWAPS: 20
@@ -109,6 +110,7 @@ ONCHAIN_SPV:
   GAS_MAX:
     STARKNET: 5
     CITREA: 0.0001
+    GOAT: 0.00002
 
   MAX_INFLIGHT_SWAPS: 100
 
@@ -122,10 +124,18 @@ ASSETS:
         securityDepositAllowed: true
         spvVaultMultiplier: 1000000000
     pricing: "$fixed-100000000"
-  PegBTC:
+  PBTC_DEV:
     chains:
       GOAT:
         address: "0x42Dff13a9D6C33f89311C188F6eA780D00287F17"
+        decimals: 18
+        securityDepositAllowed: true
+        spvVaultMultiplier: 1000000000
+    pricing: "$fixed-100000000"
+  PBTC:
+    chains:
+      GOAT:
+        address: "0xdA97429ea2082334C63813f092B6A6209bfC4DEb"
         decimals: 18
         securityDepositAllowed: true
         spvVaultMultiplier: 1000000000
